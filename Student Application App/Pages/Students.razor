@@ -1,0 +1,38 @@
+﻿@page "/students"
+@using Student_Application_App.Classes;
+
+<PageTitle>Students</PageTitle>
+
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="First Name" aria-label=" firstName " @bind="@firstName" >
+    <input type="text" class="form-control" placeholder="Last Name" aria-label=" lastName " @bind="@lastName">
+    <input type="text" class="form-control" placeholder="Age" aria-label=" age " @bind="@age">
+    <button class="btn btn-outline-success btn-success text-white " type="button" id="button-addon2" @onclick="CreateStudent">Create</button>
+    <button class="btn btn-outline-danger btn-danger text-white " type="button" id="button-addon2" @onclick="Clear">Clear</button>
+</div>
+
+<p>@output</p>
+
+@code {
+    string firstName = string.Empty;
+    string lastName = string.Empty;
+    string output = string.Empty;
+    int age = default;
+
+    void CreateStudent()
+    {
+        Student student = new(firstName, lastName, age);
+
+        output = $"{student.FullName} {student.Age}";
+
+
+    }
+
+    void Clear()
+    {
+        firstName = string.Empty;
+        lastName = string.Empty;
+        output = string.Empty;
+        age = default;
+    }
+}

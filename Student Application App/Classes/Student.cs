@@ -1,16 +1,15 @@
-﻿namespace Student_Application_App.Classes
+﻿namespace Student_Application_App.Classes;
+
+public class Student
 {
-    public class Student
-    {
 
-        private readonly string _firstName = string.Empty;
-        private readonly string _lastName = string.Empty;
-        public string FullName => $"{_firstName} {_lastName}";
-        public readonly int Age = default;
+    private readonly string _firstName = string.Empty;
+    private readonly string _lastName = string.Empty;
+    public string FullName => $"{_firstName} {_lastName}";
+    public readonly int Age = default;
 
-        public Student() { }
-        public Student(string firstName, string lastName, int age) => (_firstName, _lastName, Age) = (firstName, lastName, age);
+    public Student() { }
+    public Student(string firstName, string lastName, int age) => (_firstName, _lastName, Age) = (firstName, lastName, age);
 
 
-    }
 }
