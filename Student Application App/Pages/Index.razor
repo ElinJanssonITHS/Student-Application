@@ -1,10 +1,43 @@
 ﻿@using Student_Application_App.Classes;
+@using Calculator.Common.Classes;
+@using Calculator.Common.Enums;
 @page "/"
 
 <PageTitle>Calculator</PageTitle>
 
 <h1>Calculator</h1>
-<div class="flex-column ">
+
+<input @bind="input" style="width:145px" readonly/>
+<br/>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(1))">1</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(2))">2</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(3))">3</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AddOperation(Operators.Multiply))">*</button>
+<br />
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(4))">4</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(5))">5</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(6))">6</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AddOperation(Operators.Divide))">/</button>
+<br />
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(7))">7</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(8))">8</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AppendDigit(9))">9</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AddOperation(Operators.Subtract))">-</button>
+<br />
+<button class="btn-sm btn-light btn-lg" @onclick="@(e=>AppendDigit(0))">0</button>
+<button class="btn-sm btn-light" @onclick="@(e=>AddOperation(Operators.Add))">+</button>
+<br />
+<button class="btn-sm btn-light" @onclick="ClearDigits">C</button>
+<button class="btn-sm btn-light cc-btn" @onclick="ClearCalculation">CC</button>
+<button class="btn-sm btn-light" @onclick="AddDecimal">.</button>
+<button class="btn-sm btn-light" @onclick="Calculate">=</button>
+<p>@output</p>
+
+
+
+
+
+@* <div class="flex-column ">
     <div class="input-group mb-3 ">
         <input type="text" class="form-control me-2" style="max-width:7.5%" aria-label=" number " @bind="@x">
         <input type="text" class="form-control" style="max-width:7.5%" aria-label=" number " @bind="@y">
@@ -16,13 +49,59 @@
         <button class="btn btn-outline-dark  fs-5" style="min-width:3.1vw" type="button " id="button-addon2" @onclick="CallDivine">/</button>
     </div>
     <p>@resultString</p>
-</div>
+</div> *@
 
 
 
 
 @code{
-    string resultString = string.Empty;
+    string input = string.Empty;
+    string output = string.Empty;
+    Calc calc = new();
+
+    void AppendDigit(int digit)
+    {
+        if (input.Length.Equals(0) && digit.Equals(0)) return; 
+        if(calc.Operations.Count.Equals(0)) output = string.Empty;
+        input += digit;
+    }
+
+    void AddOperation (Operators @operator)
+    {
+        if (input.Length.Equals(0) && @operator == Operators.Subtract) input = "-";
+        var success = double.TryParse(input, out double value);
+        if (success)
+        {
+            calc.AddOperation(new Operation(value, @operator));
+            output = calc.Calculation;
+            ClearDigits();
+        }
+    }
+    void ClearDigits () => input = string.Empty;
+
+    void ClearCalculation()
+    {
+        calc.Clear();
+        ClearDigits();
+        output = string.Empty;
+    } 
+
+    void AddDecimal ()
+    {
+        if (!input.Contains('.')) input += '.';  
+    }
+
+    void Calculate()
+    {
+        AddOperation(Operators.Equals);
+        var result = calc.Calculate();
+        output = result.calculation;
+        input = result.result.ToString();
+
+    }
+
+
+    /*string resultString = string.Empty;
 
     double x = default;
     double y = default;
@@ -42,6 +121,6 @@
     void CallDivine()
     {
         StaticCalculator.Divide(x, y, out resultString);
-    }
+    }*/
 
 }

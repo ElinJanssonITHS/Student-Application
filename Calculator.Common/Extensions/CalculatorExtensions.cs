@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Calculator.Common.Records;
+using Calculator.Common.Classes;
 using Calculator.Common.Enums;
 using System.Collections;
 

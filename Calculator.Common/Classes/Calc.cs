@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Calculator.Common.Records;
 using Calculator.Common.Extensions;
 using Calculator.Common.Enums;
 
@@ -26,6 +25,21 @@ public class Calc
     }
     public void AddOperation (Operation operation) => Operations.Add(operation);
     public void Clear () {  Operations.Clear(); }
+    public (string calculation, double result) Calculate()
+    {
+        var output = Calculation;
+        var result = CalculateResult();
+        if (!double.IsNaN(result) && Operations.Count().Equals(1))
+        {
+            output = $"{result}";
+        }
+        else if (!double.IsNaN(result) && output.Length > 0)
+        {
+            output += $"{result}";
+        }
+        return (output, result);
+
+    }
     private double CalculateResult() 
     {
         Operation? result = default;
@@ -56,21 +70,7 @@ public class Calc
         }
         return result?.Value ?? double.NaN;
     }
-    public (string calculation, double result) Calculate() 
-    {
-        var output = Calculation;
-        var result = CalculateResult();
-        if (!double.IsNaN(result) && Operations.Count().Equals(1))
-            {
-            output = $"{result}";
-            }
-        else if (!double.IsNaN(result) && output.Length > 0)
-        {
-            output += $"{result}";
-        }
-        return (output, result);
-        
-    }
+
 
 
 }
